@@ -13,20 +13,18 @@ template <class ReturnType, Variant, class... Args>
 using Creator = std::function<ReturnType(Args...)>;
 
 template <class ReturnType, Variant Var, class... Args>
-Creator<ReturnType, Var, Args...>& getCreator();
+Creator<ReturnType, Var, Args...> getCreator();
 
 template <class ReturnType, Variant Var, class... Args, class ManagedReturnType = std::unique_ptr<ReturnType>>
 ManagedReturnType
 createUnique(Args... args)
 {
-    auto const& creator = getCreator<ManagedReturnType, Var, Args...>();
-    return creator(args...);
+    return getCreator<ManagedReturnType, Var, Args...>()(args...);
 }
 
 template <class ReturnType, Variant Var, class... Args, class ManagedReturnType = std::shared_ptr<ReturnType>>
 ManagedReturnType
 createShared(Args... args)
 {
-    auto const& creator = getCreator<ManagedReturnType, Var, Args...>();
-    return creator(args...);
+    return getCreator<ManagedReturnType, Var, Args...>()(args...);
 }
